@@ -1,0 +1,23 @@
+services:
+  fintracker-db:
+    image: postgres:latest
+    container_name: fintracker-db
+    environment:
+      POSTGRES_DB: fintracker-db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  fintracker:
+    container_name: fintracker
+    image: fintracker:latest
+    ports:
+      - "8080:8080"
+    depends_on:
+      - fintracker-db
+
+volumes:
+  postgres_data:
