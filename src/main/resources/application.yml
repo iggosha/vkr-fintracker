@@ -12,4 +12,6 @@ server:
   port: 8080
   servlet:
     context-path: /api/v1
+finparser:
+  url: "localhost:8081/api/v1"
 
