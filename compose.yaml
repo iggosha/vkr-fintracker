@@ -1,0 +1,6 @@
+services:
+  finparser:
+    container_name: finparser
+    image: golovkov/finparser:latest
+    ports:
+      - "8081:8080"
