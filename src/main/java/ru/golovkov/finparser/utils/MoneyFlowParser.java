@@ -19,7 +19,7 @@ public class MoneyFlowParser {
                 .builder()
                 .id(parseId(row))
                 .date(parseDate(row))
-                .category(parseCategory(row))
+                .categoryName(parseCategoryName(row))
                 .description(parseDescription(row))
                 .amount(parseAmount(row))
                 .additionalInfo(parseStatus(row))
@@ -34,7 +34,7 @@ public class MoneyFlowParser {
         return parsingUtils.getCellByNumFromRow(row, 3);
     }
 
-    private String parseCategory(Row row) {
+    private String parseCategoryName(Row row) {
         return parsingUtils.getCellByNumFromRow(row, 4);
     }
 

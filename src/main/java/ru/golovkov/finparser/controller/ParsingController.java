@@ -11,7 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.golovkov.finparser.dto.AccountDto;
 import ru.golovkov.finparser.dto.ClientDto;
 import ru.golovkov.finparser.dto.RowDto;
-import ru.golovkov.finparser.dto.SheetEntitiesDto;
+import ru.golovkov.finparser.dto.ParsedEntitiesDto;
 import ru.golovkov.finparser.service.ParsingService;
 
 import java.util.List;
@@ -45,8 +45,8 @@ public class ParsingController {
         return parsingService.parseAccount(sheetFile);
     }
 
-    @PostMapping(value = "/sheet-entities", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public SheetEntitiesDto getSheetEntity(@RequestPart("file") MultipartFile sheetFile) {
+    @PostMapping(value = "/parsed-entities", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ParsedEntitiesDto getSheetEntity(@RequestPart("file") MultipartFile sheetFile) {
         return parsingService.parseSheetEntities(sheetFile);
     }
 }

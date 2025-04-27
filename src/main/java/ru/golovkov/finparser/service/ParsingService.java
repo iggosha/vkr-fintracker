@@ -4,7 +4,7 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.golovkov.finparser.dto.AccountDto;
 import ru.golovkov.finparser.dto.ClientDto;
 import ru.golovkov.finparser.dto.RowDto;
-import ru.golovkov.finparser.dto.SheetEntitiesDto;
+import ru.golovkov.finparser.dto.ParsedEntitiesDto;
 
 import java.util.List;
 
@@ -18,5 +18,5 @@ public interface ParsingService {
 
     ClientDto parseClient(MultipartFile sheetFile);
 
-    SheetEntitiesDto parseSheetEntities(MultipartFile sheetFile);
+    ParsedEntitiesDto parseSheetEntities(MultipartFile sheetFile);
 }

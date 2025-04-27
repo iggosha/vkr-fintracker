@@ -34,4 +34,11 @@ public class GlobalExceptionHandler {
         log.error("", e);
         return new ExceptionResponse(webRequest, INTERNAL_SERVER_ERROR, e.getMessage());
     }
+
+    @ResponseStatus(INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(RuntimeException.class)
+    public ExceptionResponse handleResourceIOException(RuntimeException e, WebRequest webRequest) {
+        log.error("", e);
+        return new ExceptionResponse(webRequest, INTERNAL_SERVER_ERROR, e.getMessage());
+    }
 }

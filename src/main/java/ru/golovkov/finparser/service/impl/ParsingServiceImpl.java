@@ -11,7 +11,7 @@ import ru.golovkov.finparser.dto.AccountDto;
 import ru.golovkov.finparser.dto.ClientDto;
 import ru.golovkov.finparser.dto.MoneyFlowDto;
 import ru.golovkov.finparser.dto.RowDto;
-import ru.golovkov.finparser.dto.SheetEntitiesDto;
+import ru.golovkov.finparser.dto.ParsedEntitiesDto;
 import ru.golovkov.finparser.exception.ResourceIOException;
 import ru.golovkov.finparser.service.ParsingService;
 import ru.golovkov.finparser.utils.AccountParser;
@@ -67,20 +67,20 @@ public class ParsingServiceImpl implements ParsingService {
     }
 
     @Override
-    public SheetEntitiesDto parseSheetEntities(MultipartFile sheetFile) {
+    public ParsedEntitiesDto parseSheetEntities(MultipartFile sheetFile) {
         Sheet sheet = parsingUtils.getSheet(sheetFile);
-        SheetEntitiesDto sheetEntitiesDto = new SheetEntitiesDto();
-        sheetEntitiesDto.setClient(clientParser.parse(sheet));
-        sheetEntitiesDto.setAccount(accountParser.parse(sheet));
+        ParsedEntitiesDto parsedEntitiesDto = new ParsedEntitiesDto();
+        parsedEntitiesDto.setClient(clientParser.parse(sheet));
+        parsedEntitiesDto.setAccount(accountParser.parse(sheet));
         try {
             for (Row row : sheet) {
                 if (row.getRowNum() < EMPTY_ROWS_AMOUNT) continue;
                 MoneyFlowDto moneyFlowDto = moneyFlowParser.parse(row);
-                sheetEntitiesDto.getMoneyFlows().add(moneyFlowDto);
+                parsedEntitiesDto.getMoneyFlows().add(moneyFlowDto);
             }
         } catch (ResourceIOException e) {
-            log.info("Supposedly got EOF, last parsed transaction '{}'", sheetEntitiesDto.getMoneyFlows().getLast());
+            log.info("Supposedly got EOF, last parsed transaction '{}'", parsedEntitiesDto.getMoneyFlows().getLast());
         }
-        return sheetEntitiesDto;
+        return parsedEntitiesDto;
     }
 }

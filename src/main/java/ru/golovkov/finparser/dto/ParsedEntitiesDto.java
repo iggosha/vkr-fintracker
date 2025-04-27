@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class SheetEntitiesDto {
+public class ParsedEntitiesDto {
 
     private AccountDto account;
     private ClientDto client;
