@@ -2,15 +2,11 @@ package ru.golovkov.fintracker.dto;
 
 import lombok.Data;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-/**
- * DTO for {@link ru.golovkov.fintracker.model.MoneyFlow}
- */
 @Data
-public class MoneyFlowDto implements Serializable {
+public class MoneyFlowDto {
 
     private String id;
     private LocalDate date;

@@ -12,6 +12,6 @@ public class ParsedMoneyFlowDto {
     private LocalDate date;
     private String description;
     private BigDecimal amount;
-    private String category;
+    private String categoryName;
     private String additionalInfo;
 }
