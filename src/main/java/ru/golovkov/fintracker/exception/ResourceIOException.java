@@ -9,8 +9,12 @@ import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 @NoArgsConstructor
 public class ResourceIOException extends RuntimeException {
 
+    public ResourceIOException(String message) {
+        super(message);
+    }
+
     public ResourceIOException(String message, Exception e) {
-        super(message + e);
+        super(message, e);
     }
 }
 
