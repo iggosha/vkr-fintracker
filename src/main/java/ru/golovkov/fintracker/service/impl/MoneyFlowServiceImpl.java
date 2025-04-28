@@ -31,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 @Transactional
 @Service
@@ -45,10 +46,26 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
 
     private final MoneyFlowRepository repository;
     private final MoneyFlowMapper mapper;
+    private static final String EXC_MESSAGE_PATTERN = "Money flow with id %s was not found";
 
     @Override
     public MoneyFlowDto create(MoneyFlowDto dto) {
         return null;
+    }
+
+    @Override
+    public MoneyFlowDto create(MoneyFlowDto moneyFlowDto, String accountId) {
+        Account account = accountRepository
+                .findById(accountId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Account with id %s was not found".formatted(accountId))
+                );
+        Category category = findOrSaveCategory("Виртуальные операции", Set.of(), Map.of());
+        MoneyFlow moneyFlow = mapper.mapToEntityFromDto(moneyFlowDto);
+        moneyFlow.setAccount(account);
+        moneyFlow.setCategory(category);
+        moneyFlow.setId(UUID.randomUUID().toString());
+        return mapper.mapToDtoFromEntity(repository.save(moneyFlow));
     }
 
     @Override
@@ -67,7 +84,7 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
 
         List<MoneyFlow> moneyFlows = new ArrayList<>();
         for (ParsedMoneyFlowDto parsedMoneyFlow : parsedEntities.getMoneyFlows()) {
-            MoneyFlow moneyFlow = mapper.mapToEntityFromParsed(parsedMoneyFlow);
+            MoneyFlow moneyFlow = mapper.mapToEntityFromParsedDto(parsedMoneyFlow);
             String categoryName = parsedMoneyFlow.getCategoryName();
             Category category = findOrSaveCategory(categoryName, categoryNames, categoryMap);
             moneyFlow.setCategory(category);
@@ -75,6 +92,60 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
             moneyFlows.add(moneyFlow);
         }
         repository.saveAll(moneyFlows);
+    }
+
+    @Override
+    public List<MoneyFlowDto> getAllByClientId(UUID clientId, Pageable pageable) {
+        Page<MoneyFlow> moneyFlows = repository.findAllByAccountClientId(clientId, pageable);
+        return mapper.mapToDtosFromEntities(moneyFlows.getContent());
+    }
+
+    @Override
+    public List<MoneyFlowDto> getAllByAccountId(String accountId, Pageable pageable) {
+        Page<MoneyFlow> moneyFlows = repository.findAllByAccountId(accountId, pageable);
+        return mapper.mapToDtosFromEntities(moneyFlows.getContent());
+    }
+
+    @Override
+    public MoneyFlowDto getById(String id) {
+        return mapper.mapToDtoFromEntity(findByIdOrThrow(id));
+    }
+
+    @Override
+    public List<MoneyFlowDto> getAll() {
+        return mapper.mapToDtosFromEntities(repository.findAll());
+    }
+
+    @Override
+    public List<MoneyFlowDto> getAll(Pageable pageable) {
+        Page<MoneyFlow> moneyFlowsPage = repository.findAll(pageable);
+        return mapper.mapToDtosFromEntities(moneyFlowsPage.getContent());
+    }
+
+    @Override
+    public MoneyFlowDto updateById(String id, MoneyFlowDto moneyFlowDto) {
+        MoneyFlow moneyFlow = findByIdOrThrow(id);
+        mapper.updateEntityFromDto(moneyFlow, moneyFlowDto);
+        return mapper.mapToDtoFromEntity(repository.save(moneyFlow));
+    }
+
+    @Override
+    public void deleteById(String id) {
+        if (repository.existsById(id)) {
+            repository.deleteById(id);
+        } else {
+            throw new ResourceNotFoundException(EXC_MESSAGE_PATTERN.formatted(id));
+        }
+    }
+
+    @Override
+    public void deleteAllByIds(List<String> ids) {
+        repository.deleteAllById(ids);
+    }
+
+    @Override
+    public void deleteAll() {
+        repository.deleteAll();
     }
 
     private Client findOrSaveClient(ParsedClientDto client) {
@@ -121,40 +192,9 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
         return categoryMap;
     }
 
-    @Override
-    public MoneyFlowDto getById(String id) {
-        return mapper.mapToDtoFromEntity(repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("Money flow with id " + id + " was not found")
-        ));
-    }
-
-    @Override
-    public List<MoneyFlowDto> getAll(Pageable pageable) {
-        Page<MoneyFlow> moneyFlowsPage = repository.findAll(pageable);
-        return mapper.mapToDtosFromEntities(moneyFlowsPage.getContent());
-    }
-
-    @Override
-    public MoneyFlowDto updateById(String id, MoneyFlowDto dto) {
-        return null;
-    }
-
-    @Override
-    public void deleteById(String id) {
-        if (repository.existsById(id)) {
-            repository.deleteById(id);
-        } else {
-            throw new ResourceNotFoundException("Money flow with id " + id + " was not found");
-        }
-    }
-
-    @Override
-    public void deleteAllByIds(List<String> ids) {
-        repository.deleteAllById(ids);
-    }
-
-    @Override
-    public void deleteAll() {
-        repository.deleteAll();
+    private MoneyFlow findByIdOrThrow(String id) {
+        return repository
+                .findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException(EXC_MESSAGE_PATTERN.formatted(id)));
     }
 }
