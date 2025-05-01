@@ -8,6 +8,6 @@ import java.util.UUID;
 
 public interface ClientRepository extends JpaRepository<Client, UUID> {
 
-    Optional<Client> findByName(String name);
+    Optional<Client> getByName(String name);
 
 }

@@ -47,7 +47,7 @@ public class AccountServiceImpl implements AccountService {
 
     @Override
     public List<AccountDto> getAllByClientId(UUID clientId) {
-        return mapper.mapToDtosFromEntities(repository.findAllByClientId(clientId));
+        return mapper.mapToDtosFromEntities(repository.getAllByClientId(clientId));
     }
 
     @Override

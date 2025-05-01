@@ -95,14 +95,18 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
     }
 
     @Override
-    public List<MoneyFlowDto> getAllByClientId(UUID clientId, Pageable pageable) {
-        Page<MoneyFlow> moneyFlows = repository.findAllByAccountClientId(clientId, pageable);
+    public List<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable) {
+        Page<MoneyFlow> moneyFlows = (categoryId == null)
+                ? repository.getAllByAccountClientId(clientId, pageable)
+                : repository.getAllByAccountClientIdAndCategoryId(clientId, categoryId, pageable);
         return mapper.mapToDtosFromEntities(moneyFlows.getContent());
     }
 
     @Override
-    public List<MoneyFlowDto> getAllByAccountId(String accountId, Pageable pageable) {
-        Page<MoneyFlow> moneyFlows = repository.findAllByAccountId(accountId, pageable);
+    public List<MoneyFlowDto> getAllByAccountId(String accountId, UUID categoryId, Pageable pageable) {
+        Page<MoneyFlow> moneyFlows = (categoryId == null)
+                ? repository.getAllByAccountId(accountId, pageable)
+                : repository.getAllByAccountIdAndCategoryId(accountId, categoryId, pageable);
         return mapper.mapToDtosFromEntities(moneyFlows.getContent());
     }
 
@@ -149,7 +153,7 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
     }
 
     private Client findOrSaveClient(ParsedClientDto client) {
-        return clientRepository.findByName(client.getName())
+        return clientRepository.getByName(client.getName())
                 .orElseGet(() -> {
                     Client newClient = new Client();
                     newClient.setName(client.getName());

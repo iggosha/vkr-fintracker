@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public interface AccountRepository extends JpaRepository<Account, String> {
 
-    List<Account> findAllByClientId(UUID clientId);
+    List<Account> getAllByClientId(UUID clientId);
 
     void deleteByClientId(UUID clientId);
 }

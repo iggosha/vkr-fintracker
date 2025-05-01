@@ -42,17 +42,19 @@ public class MoneyFlowController {
     @GetMapping("/clients/{clientId}/flows")
     public List<MoneyFlowDto> getAllByClientId(
             @PathVariable UUID clientId,
+            @RequestParam(required = false) UUID categoryId,
             @ParameterObject @PageableDefault(sort = {"date"}, direction = DESC) Pageable pageable
     ) {
-        return service.getAllByClientId(clientId, pageable);
+        return service.getAllByClientId(clientId, categoryId, pageable);
     }
 
     @GetMapping("/accounts/{accountId}/flows")
     public List<MoneyFlowDto> getAllByAccountId(
             @PathVariable String accountId,
+            @RequestParam(required = false) UUID categoryId,
             @ParameterObject @PageableDefault(sort = {"date"}, direction = DESC) Pageable pageable
     ) {
-        return service.getAllByAccountId(accountId, pageable);
+        return service.getAllByAccountId(accountId, categoryId, pageable);
     }
 
     @GetMapping("/flows/{id}")

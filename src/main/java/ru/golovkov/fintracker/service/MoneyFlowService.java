@@ -17,7 +17,7 @@ public interface MoneyFlowService extends CrudService<String, MoneyFlowDto> {
 
     void createFromFile(MultipartFile sheetFile);
 
-    List<MoneyFlowDto> getAllByClientId(UUID clientId, Pageable pageable);
+    List<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable);
 
-    List<MoneyFlowDto> getAllByAccountId(String accountId, Pageable pageable);
+    List<MoneyFlowDto> getAllByAccountId(String accountId, UUID categoryId, Pageable pageable);
 }
