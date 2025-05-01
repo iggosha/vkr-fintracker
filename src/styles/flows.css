@@ -1,0 +1,85 @@
+/* Стили для выпадающего списка */
+select {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+select option:checked {
+    background-color: #3c9;
+    color: #fff;
+}
+
+select option {
+    background-color: #fff;
+    color: #334;
+}
+
+/* Стили кнопок */
+button {
+    border: 0;
+    background-color: #fff;
+    color: #334;
+    font-size: large;border-radius: 10px;
+        padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+button:hover {
+    background-color: #ddd;
+}
+
+button:active {
+    background-color: #3c9;
+    color: #fff;
+}
+
+button:disabled {
+    background-color: #445;
+    color: #ddd;
+    cursor: not-allowed;
+}
+
+/* Основной стиль страницы */
+.main {
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+}
+
+/* Стиль таблицы */
+table {
+    width: 80vw;
+    margin: 0 auto;
+    font-size: medium;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+th,
+td {
+    padding: 5px 25px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+th {
+    text-align: center;
+    color: #fff;
+    background-color: #3c9;
+}
+
+tr:nth-child(even) {
+    background-color: #445;
+}
