@@ -3,6 +3,7 @@ package ru.golovkov.fintracker.service.impl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -95,11 +96,13 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
     }
 
     @Override
-    public List<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable) {
+    public Page<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable) {
         Page<MoneyFlow> moneyFlows = (categoryId == null)
                 ? repository.getAllByAccountClientId(clientId, pageable)
                 : repository.getAllByAccountClientIdAndCategoryId(clientId, categoryId, pageable);
-        return mapper.mapToDtosFromEntities(moneyFlows.getContent());
+        List<MoneyFlowDto> dtos = mapper.mapToDtosFromEntities(moneyFlows.getContent());
+
+        return new PageImpl<>(dtos, pageable, moneyFlows.getTotalElements());
     }
 
     @Override

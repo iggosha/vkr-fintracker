@@ -25,8 +25,8 @@ public interface MoneyFlowRepository extends JpaRepository<MoneyFlow, String> {
                 SELECT mf.category.name, SUM(mf.amount)
                 FROM MoneyFlow mf
                 WHERE mf.account.client.id = :clientId
-                  AND (:from IS NULL OR mf.date >= :from)
-                  AND (:to IS NULL OR mf.date <= :to)
+                  AND mf.date >= COALESCE(:from, (SELECT MIN(mf2.date) FROM MoneyFlow mf2))
+                  AND mf.date <= COALESCE(:to, (SELECT MAX(mf2.date) FROM MoneyFlow mf2))
                   AND mf.amount < 0
                 GROUP BY mf.category.name
             """)
@@ -44,8 +44,8 @@ public interface MoneyFlowRepository extends JpaRepository<MoneyFlow, String> {
                     SUM(CASE WHEN mf.amount < 0 THEN mf.amount ELSE 0 END)
                 FROM MoneyFlow mf
                 WHERE mf.account.client.id = :clientId
-                  AND (:from IS NULL OR mf.date >= :from)
-                  AND (:to IS NULL OR mf.date <= :to)
+                  AND mf.date >= COALESCE(:from, (SELECT MIN(mf2.date) FROM MoneyFlow mf2))
+                  AND mf.date <= COALESCE(:to, (SELECT MAX(mf2.date) FROM MoneyFlow mf2))
                 GROUP BY YEAR(mf.date), MONTH(mf.date)
             """)
     List<Object[]> getMonthlyInflowsAndOutflows(
@@ -62,8 +62,8 @@ public interface MoneyFlowRepository extends JpaRepository<MoneyFlow, String> {
                     MAX(mf.date) AS maxDate
                 FROM MoneyFlow mf
                 WHERE mf.account.client.id = :clientId
-                  AND (:from IS NULL OR mf.date >= :from)
-                  AND (:to IS NULL OR mf.date <= :to)
+                  AND mf.date >= COALESCE(:from, (SELECT MIN(mf2.date) FROM MoneyFlow mf2))
+                  AND mf.date <= COALESCE(:to, (SELECT MAX(mf2.date) FROM MoneyFlow mf2))
             """)
     Object[] getTotalInflowAndOutflow(
             @Param("clientId") UUID clientId,

@@ -1,5 +1,6 @@
 package ru.golovkov.fintracker.service;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.multipart.MultipartFile;
 import ru.golovkov.fintracker.dto.MoneyFlowDto;
@@ -17,7 +18,7 @@ public interface MoneyFlowService extends CrudService<String, MoneyFlowDto> {
 
     void createFromFile(MultipartFile sheetFile);
 
-    List<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable);
+    Page<MoneyFlowDto> getAllByClientId(UUID clientId, UUID categoryId, Pageable pageable);
 
     List<MoneyFlowDto> getAllByAccountId(String accountId, UUID categoryId, Pageable pageable);
 }

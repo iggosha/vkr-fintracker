@@ -2,6 +2,7 @@ package ru.golovkov.fintracker.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.MediaType;
@@ -40,7 +41,7 @@ public class MoneyFlowController {
     }
 
     @GetMapping("/clients/{clientId}/flows")
-    public List<MoneyFlowDto> getAllByClientId(
+    public Page<MoneyFlowDto> getAllByClientId(
             @PathVariable UUID clientId,
             @RequestParam(required = false) UUID categoryId,
             @ParameterObject @PageableDefault(sort = {"date"}, direction = DESC) Pageable pageable
