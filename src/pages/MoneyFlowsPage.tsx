@@ -7,12 +7,13 @@ import { MoneyFlow } from "../types/MoneyFlow";
 import { Client } from "../types/Client";
 import { Category } from "../types/Category";
 import { MoneyFlowTable } from "../components/MoneyFlowTable";
+import { Page } from "../types/Page";
 import "../styles/flows.css";
 
 export function MoneyFlowsPage() {
   const [clients, setClients] = useState<Client[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
-  const [flows, setFlows] = useState<MoneyFlow[]>([]);
+  const [flowPage, setFlowPage] = useState<Page<MoneyFlow> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -25,7 +26,7 @@ export function MoneyFlowsPage() {
   const updateParam = useCallback(
     (key: string, value: string | undefined) => {
       const newParams = new URLSearchParams(searchParams);
-      if (value === undefined || value === "") {
+      if (!value) {
         newParams.delete(key);
       } else {
         newParams.set(key, value);
@@ -47,10 +48,7 @@ export function MoneyFlowsPage() {
         setClients(clientsData);
         setCategories(categoriesData);
       } catch (error) {
-        console.error("Ошибка при инициализации данных:", error);
-        setError(
-          "Не удалось загрузить клиентов или категории. Попробуйте позже."
-        );
+        setError("Ошибка при инициализации данных." + error);
       } finally {
         setIsLoading(false);
       }
@@ -62,17 +60,16 @@ export function MoneyFlowsPage() {
   useEffect(() => {
     const loadFlows = async () => {
       if (!clientId) {
-        setFlows([]);
+        setFlowPage(null);
         return;
       }
       setIsLoading(true);
       setError(null);
       try {
-        const data = await getAllMoneyFlows(clientId, page, 10, categoryId);
-        setFlows(data);
+        const pageData = await getAllMoneyFlows(clientId, page, 10, categoryId);
+        setFlowPage(pageData);
       } catch (error) {
-        console.error("Ошибка при загрузке транзакций:", error);
-        setError("Не удалось загрузить транзакции. Попробуйте позже.");
+        setError("Не удалось загрузить транзакции." + error);
       } finally {
         setIsLoading(false);
       }
@@ -80,6 +77,68 @@ export function MoneyFlowsPage() {
 
     loadFlows();
   }, [clientId, categoryId, page]);
+
+  const renderPageNumbers = () => {
+    if (!flowPage) return null;
+
+    const totalPages = flowPage.totalPages;
+    const currentPage = flowPage.number;
+
+    const pagesToShow = [];
+    const maxButtons = 5;
+
+    if (totalPages <= maxButtons) {
+      for (let i = 0; i < totalPages; i++) {
+        pagesToShow.push(i);
+      }
+    } else {
+      const start = Math.max(0, currentPage - 1);
+      const end = Math.min(totalPages, currentPage + 2);
+
+      if (start > 0) pagesToShow.push(0);
+      if (start > 1) pagesToShow.push(-1);
+
+      for (let i = start; i < end; i++) {
+        pagesToShow.push(i);
+      }
+
+      if (end < totalPages - 1) pagesToShow.push(-1);
+      if (end < totalPages) pagesToShow.push(totalPages - 1);
+    }
+
+    return (
+      <div className="pagination">
+        {pagesToShow.map((p, i) =>
+          p === -1 ? (
+            <span key={i}>...</span>
+          ) : (
+            <button
+              key={p}
+              className={p === currentPage ? "active" : ""}
+              onClick={() => updateParam("page", String(p + 1))}
+            >
+              {p + 1}
+            </button>
+          )
+        )}
+      </div>
+    );
+  };
+
+  const updateParams = useCallback(
+    (params: Record<string, string | undefined>) => {
+      const newParams = new URLSearchParams(searchParams);
+      for (const [key, value] of Object.entries(params)) {
+        if (!value) {
+          newParams.delete(key);
+        } else {
+          newParams.set(key, value);
+        }
+      }
+      setSearchParams(newParams, { replace: true });
+    },
+    [searchParams, setSearchParams]
+  );
 
   return (
     <div className="flows-main">
@@ -98,7 +157,12 @@ export function MoneyFlowsPage() {
 
       <select
         value={categoryId || ""}
-        onChange={(e) => updateParam("categoryId", e.target.value || undefined)}
+        onChange={(e) => {
+          updateParams({
+            categoryId: e.target.value || undefined,
+            page: "1",
+          });
+        }}
         disabled={isLoading}
       >
         <option value="">Все категории</option>
@@ -115,23 +179,26 @@ export function MoneyFlowsPage() {
         <div>Загрузка...</div>
       ) : (
         <>
-          <MoneyFlowTable flows={flows} />
-
-          <div>
-            <button
-              onClick={() => updateParam("page", String(page))}
-              disabled={page === 0 || isLoading}
-            >
-              Назад
-            </button>
-            <span>Страница {page + 1}</span>
-            <button
-              onClick={() => updateParam("page", String(page + 2))}
-              disabled={isLoading}
-            >
-              Вперёд
-            </button>
-          </div>
+          {flowPage && (
+            <>
+              <MoneyFlowTable flows={flowPage.content} clientId={clientId} />
+              <div className="pagination-controls">
+                <button
+                  onClick={() => updateParam("page", String(page))}
+                  disabled={page === 0}
+                >
+                  Назад
+                </button>
+                {renderPageNumbers()}
+                <button
+                  onClick={() => updateParam("page", String(page + 2))}
+                  disabled={page + 1 >= flowPage.totalPages}
+                >
+                  Вперёд
+                </button>
+              </div>
+            </>
+          )}
         </>
       )}
     </div>

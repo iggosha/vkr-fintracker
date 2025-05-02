@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 import { MoneyFlowsPage } from "./pages/MoneyFlowsPage";
 import { AnalysisPage } from "./pages/AnalysisPage";
 // import { ManagingPage } from "./pages/ManagingPage";
-import { Layout } from "./components/Layout";
-import "./styles/app.css"
+import { Layout } from "./components/common/Layout";
+import "./styles/common/app.css"
 
 function App() {
   return (

@@ -5,7 +5,6 @@
     align-content: center;
 }
 
-/* Стили для выпадающего списка */
 .analysis-main select {
     border: 0;
     color: #334;
@@ -44,7 +43,6 @@
     cursor: pointer;
 }
 
-/* Стиль таблицы */
 .analysis-main table {
     width: 40vw;
     margin: 25px auto;
@@ -80,7 +78,6 @@
     background-color: #445;
 }
 
-/* Кнопки */
 
 .analysis-main button {
     border: 0;
@@ -95,7 +92,6 @@
 
 }
 
-/* Диаграмма */
 
 .analysis-main .pie {
     height: 500px;
