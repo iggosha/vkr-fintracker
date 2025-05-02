@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 import { MoneyFlowsPage } from "./pages/MoneyFlowsPage";
+import { AnalysisPage } from "./pages/AnalysisPage";
+// import { ManagingPage } from "./pages/ManagingPage";
 import { Layout } from "./components/Layout";
 import "./styles/app.css"
 
@@ -8,8 +10,8 @@ function App() {
     <Routes>
       <Route path="/" element={<Layout />}>
         <Route path="flows" element={<MoneyFlowsPage />} />
-        {/* <Route path="analyze" element={<AnalysisPage />} /> */}
-        {/* <Route path="manage" element={<ManagePage />} /> */}
+        <Route path="analysis" element={<AnalysisPage />} />
+        {/* <Route path="manage" element={<ManagingPage />} /> */}
       </Route>
     </Routes>
   );

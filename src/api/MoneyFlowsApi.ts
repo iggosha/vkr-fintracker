@@ -7,7 +7,7 @@ type GetAllMoneyFlowsParams = {
   categoryId?: string;
 };
 
-export async function getAllhMoneyFlows(
+export async function getAllMoneyFlows(
   clientId: string,
   page: number,
   size: number,

@@ -9,11 +9,11 @@ export function MoneyFlowTable({ flows }: Props) {
     <table>
       <thead>
         <tr>
-          <th>Дата</th>
-          <th>Описание</th>
-          <th>Сумма</th>
-          <th>Категория</th>
-          <th>Доп. информация</th>
+          <th>Дата 📆</th>
+          <th>Описание 📝</th>
+          <th>Сумма 🔟</th>
+          <th>Категория 🅰️</th>
+          <th>Доп. инфо 📄</th>
         </tr>
       </thead>
       <tbody>
