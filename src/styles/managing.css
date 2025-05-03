@@ -7,12 +7,48 @@
 }
 
 .managing-main table {
-    margin: 0 auto;box-shadow: 0 0 25px rgba(51, 204, 153, 1);
-    padding: 25px;
-    border-radius: 25px;
-    margin-bottom: 25px;
+    margin: 0 auto;
 }
 
+/* SUB-s & COLUMNS */
+.managing-columns {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.managing-sub {
+    width: 30vw;
+    margin:  0 0 75px auto;
+    border-radius: 25px;
+    padding: 15px;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+/* SELECT  */
+.managing-main select {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.managing-main select option:checked {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.managing-main select option {
+    background-color: #fff;
+    color: #334;
+}
 
 /* INPUTS TEXT NUMBER  */
 .managing-main input[type="text"],
@@ -28,7 +64,7 @@
     cursor: text;
 }
 
-.managing-main input[type="text"]:hover, 
+.managing-main input[type="text"]:hover,
 .managing-main input[type="number"]:hover {
     box-shadow: 0 0 25px rgba(51, 204, 153, 1);
 }

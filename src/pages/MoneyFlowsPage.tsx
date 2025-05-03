@@ -146,7 +146,7 @@ export function MoneyFlowsPage() {
         onChange={(e) => updateParam("clientId", e.target.value)}
         disabled={isLoading}
       >
-        <option value="">Выберите клиента 👔</option>
+        <option value="">👤 Выберите клиента</option>
         {clients.map((client) => (
           <option key={client.id} value={client.id}>
             {client.name}
@@ -164,7 +164,7 @@ export function MoneyFlowsPage() {
         }}
         disabled={isLoading}
       >
-        <option value="">Все категории</option>
+        <option value="">🅰️ Все категории</option>
         {categories.map((category) => (
           <option key={category.id} value={category.id}>
             {category.name}

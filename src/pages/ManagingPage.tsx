@@ -8,12 +8,15 @@ import {
   uploadFile,
 } from "../api/MoneyFlowsApi";
 import { MoneyFlow } from "../types/MoneyFlow";
-import { ManagingMoneyFlowTable } from "../components/ManagingMoneyFlowTable";
+import { ManagingTable } from "../components/ManagingTable";
 import "../styles/managing.css";
 
 export function ManagingPage() {
   const [flowId, setFlowId] = useState("");
   const [flow, setFlow] = useState<MoneyFlow | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [newFlow, setNewFlow] = useState<MoneyFlow>({
     id: "",
     date: "",
@@ -24,10 +27,6 @@ export function ManagingPage() {
     categoryId: "",
     categoryName: "",
   });
-
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
 
   const handleGetFlow = useCallback(async () => {
     if (!flowId) return;
@@ -47,7 +46,7 @@ export function ManagingPage() {
   }, [flowId]);
 
   const handleCreateFlow = useCallback(async () => {
-    if (!newFlow?.accountId) {
+    if (!newFlow.accountId) {
       setError("Нужно указать accountId");
       return;
     }
@@ -70,11 +69,9 @@ export function ManagingPage() {
       setError("Код транзакции не указан.");
       return;
     }
-
     setIsLoading(true);
     setError(null);
     setSuccessMessage(null);
-
     try {
       const updatedFlow = await updateFlow(newFlow);
       setSuccessMessage(`Транзакция ${updatedFlow.id} обновлена.`);
@@ -141,73 +138,81 @@ export function ManagingPage() {
     <div className="managing-main">
       <h2>Управление транзакциями</h2>
 
-      {error && <div>{error}</div>}
-      {successMessage && <div>{successMessage}</div>}
+      {error && <div style={{ color: "red" }}>{error}</div>}
+      {successMessage && (
+        <div style={{ color: "lightgreen" }}>{successMessage}</div>
+      )}
 
-      <div>
-        <h3>Загрузить файл с транзакциями</h3>
-        <input
-          type="file"
-          accept=".xlsx,.xls"
-          onChange={handleUploadFile}
-          disabled={isLoading}
-        />
-      </div>
-
-      <div>
-        <h3>Получить / Удалить транзакцию по коду</h3>
-        <table>
-          <tbody>
-            <tr>
-              <td>
-                <label>Код транзакции:</label>
-              </td>
-              <td>
-                <input
-                  value={flowId}
-                  onChange={(e) => setFlowId(e.target.value)}
-                  type="text"
-                  disabled={isLoading}
-                />
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div className="managing-columns">
         <div>
-          <button onClick={handleGetFlow} disabled={isLoading || !flowId}>
-            Получить
-          </button>
-          <button onClick={handleDeleteFlow} disabled={isLoading || !flowId}>
-            Удалить
-          </button>
+          <div className="managing-sub">
+            <h3>📤 Загрузить файл с транзакциями</h3>
+            <input
+              type="file"
+              accept=".xlsx,.xls"
+              onChange={handleUploadFile}
+              disabled={isLoading}
+            />
+          </div>
+
+          <div className="managing-sub">
+            <h3>📥 Получить / ❌ Удалить транзакцию по коду</h3>
+            <table>
+              <tbody>
+                <tr>
+                  <td>
+                    <label>🆔 Код транзакции:</label>
+                  </td>
+                  <td>
+                    <input
+                      value={flowId}
+                      onChange={(e) => setFlowId(e.target.value)}
+                      type="text"
+                      disabled={isLoading}
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+            <div>
+              <button onClick={handleGetFlow} disabled={isLoading || !flowId}>
+                Получить
+              </button>
+              <button
+                onClick={handleDeleteFlow}
+                disabled={isLoading || !flowId}
+              >
+                Удалить
+              </button>
+            </div>
+            {flow && <pre>{JSON.stringify(flow, null, 2)}</pre>}
+          </div>
+
+          <div className="managing-sub">
+            <h3>❌ Удалить все транзакции</h3>
+            <button
+              onClick={handleDeleteAll}
+              disabled={isLoading}
+              style={{ backgroundColor: "#c00" }}
+            >
+              Удалить все
+            </button>
+          </div>
         </div>
 
-        {flow && <pre>{JSON.stringify(flow, null, 2)}</pre>}
-      </div>
-
-      <div>
-        <h3>Создать / Обновить транзакцию</h3>
-        <ManagingMoneyFlowTable
-          flow={newFlow}
-          disabled={isLoading}
-          onChange={setNewFlow}
-        />
-
         <div>
-          <button onClick={handleCreateFlow} disabled={isLoading || !flow?.accountId}>
-            Создать
-          </button>
-          <button onClick={handleUpdateFlow} disabled={isLoading || !flow?.id}>
-            Обновить
-          </button>
+          <div className="managing-sub">
+            <h3> 🆕 Создать / 🔄 Обновить транзакцию</h3>
+            <ManagingTable
+              flow={newFlow}
+              disabled={isLoading}
+              onChange={setNewFlow}
+              onCreate={handleCreateFlow}
+              onUpdate={handleUpdateFlow}
+              isLoading={isLoading}
+            />
+          </div>
         </div>
-      </div>
-
-      <div>
-        <h3>Удалить все транзакции</h3>
-        <button onClick={handleDeleteAll} disabled={isLoading}>
-          Удалить все
-        </button>
       </div>
     </div>
   );

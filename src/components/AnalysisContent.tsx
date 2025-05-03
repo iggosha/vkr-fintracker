@@ -11,14 +11,14 @@ import {
 ChartJS.register(ArcElement, Tooltip, Legend);
 
 const COLORS = [
-  "#FF6384",
-  "#36A2EB",
-  "#FFCE56",
-  "#4BC0C0",
-  "#9966FF",
-  "#FF9F40",
-  "#BDB76B",
-  "#E9967A",
+  "#CCA133",
+  "#CC5133",
+  "#CCC033",
+  "#B133CC",
+  "#33CC99",
+  "#457766",
+  "#49394D",
+  "#5E33CC",
 ];
 
 interface Props {

@@ -93,7 +93,6 @@ export function AnalysisPage() {
 
   return (
     <div className="analysis-main">
-      <div>Анализ расходов по категориям</div>
 
       <div className="filters">
         <select
