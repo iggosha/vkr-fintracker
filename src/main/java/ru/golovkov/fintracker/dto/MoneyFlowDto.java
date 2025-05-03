@@ -14,6 +14,7 @@ public class MoneyFlowDto {
     private String description;
     private BigDecimal amount;
     private String additionalInfo;
+    private String accountId;
     private UUID categoryId;
     private String categoryName;
 }

@@ -1,6 +1,6 @@
 services:
   fintracker-db:
-    image: postgres:latest
+    image: postgres:16.4-alpine
     container_name: fintracker-db
     environment:
       POSTGRES_DB: fintracker-db
@@ -14,6 +14,9 @@ services:
   fintracker:
     container_name: fintracker
     image: fintracker:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8080:8080"
     depends_on:

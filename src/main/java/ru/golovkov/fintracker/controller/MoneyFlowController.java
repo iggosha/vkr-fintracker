@@ -35,8 +35,8 @@ public class MoneyFlowController {
         service.createFromFile(sheetFile);
     }
 
-    @PostMapping("/flows")
-    public MoneyFlowDto create(@RequestBody MoneyFlowDto moneyFlowDto, @RequestParam String accountId) {
+    @PostMapping("/accounts/{accountId}/flows")
+    public MoneyFlowDto create(@RequestBody MoneyFlowDto moneyFlowDto, @PathVariable String accountId) {
         return service.create(moneyFlowDto, accountId);
     }
 

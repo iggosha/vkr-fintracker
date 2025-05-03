@@ -2,7 +2,7 @@ spring:
   application:
     name: fintracker
   datasource:
-    url: jdbc:postgresql://fintracker-db:5432/fin-tracker-db
+    url: jdbc:postgresql://fintracker-db:5432/fintracker-db
     username: postgres
     password: postgres
   jpa:

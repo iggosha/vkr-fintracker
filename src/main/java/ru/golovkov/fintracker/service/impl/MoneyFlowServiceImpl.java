@@ -26,6 +26,7 @@ import ru.golovkov.fintracker.repository.MoneyFlowRepository;
 import ru.golovkov.fintracker.service.MoneyFlowService;
 import ru.golovkov.fintracker.util.FinparserClient;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,6 +52,7 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
 
     @Override
     public MoneyFlowDto create(MoneyFlowDto dto) {
+        // unsuitable
         return null;
     }
 
@@ -61,7 +63,12 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
                 .orElseThrow(() ->
                         new ResourceNotFoundException("Account with id %s was not found".formatted(accountId))
                 );
-        Category category = findOrSaveCategory("Виртуальные операции", Set.of(), Map.of());
+        Category category = categoryRepository
+                .findByName(moneyFlowDto.getCategoryName())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category with name %s was not found"
+                                .formatted(moneyFlowDto.getCategoryName()))
+                );
         MoneyFlow moneyFlow = mapper.mapToEntityFromDto(moneyFlowDto);
         moneyFlow.setAccount(account);
         moneyFlow.setCategory(category);
@@ -131,10 +138,34 @@ public class MoneyFlowServiceImpl implements MoneyFlowService {
 
     @Override
     public MoneyFlowDto updateById(String id, MoneyFlowDto moneyFlowDto) {
+        normalizeDto(moneyFlowDto);
         MoneyFlow moneyFlow = findByIdOrThrow(id);
+        Category category = categoryRepository
+                .findByName(moneyFlowDto.getCategoryName())
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Category with name %s was not found"
+                                .formatted(moneyFlowDto.getCategoryName()))
+                );
         mapper.updateEntityFromDto(moneyFlow, moneyFlowDto);
+        moneyFlow.setCategory(category);
         return mapper.mapToDtoFromEntity(repository.save(moneyFlow));
     }
+
+    private void normalizeDto(MoneyFlowDto dto) {
+        if (dto.getDescription() != null && dto.getDescription().isBlank()) {
+            dto.setDescription(null);
+        }
+        if (dto.getAdditionalInfo() != null && dto.getAdditionalInfo().isBlank()) {
+            dto.setAdditionalInfo(null);
+        }
+        if (dto.getAccountId() != null && dto.getAccountId().isBlank()) {
+            dto.setAccountId(null);
+        }
+        if (dto.getAmount().equals(BigDecimal.ZERO)) {
+            dto.setAmount(null);
+        }
+    }
+
 
     @Override
     public void deleteById(String id) {
