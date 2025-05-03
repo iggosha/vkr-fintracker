@@ -4,6 +4,7 @@ export interface MoneyFlow {
   description: string;
   amount: number;
   additionalInfo: string;
+  accountId: string;
   categoryId: string;
   categoryName: string;
 }

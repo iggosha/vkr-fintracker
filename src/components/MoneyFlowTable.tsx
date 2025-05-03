@@ -20,6 +20,7 @@ export function MoneyFlowTable({ flows, clientId }: Props) {
           <th>
             <Link to={`/analysis?clientId=${clientId}`}>Категория 🅰️</Link>
           </th>
+          <th>Код счёта 🆔</th>
           <th>Доп. инфо 📄</th>
         </tr>
       </thead>
@@ -31,6 +32,7 @@ export function MoneyFlowTable({ flows, clientId }: Props) {
             <td>{flow.description}</td>
             <td style={{ whiteSpace: "nowrap" }}>{flow.amount}</td>
             <td style={{ whiteSpace: "nowrap" }}>{flow.categoryName}</td>
+            <td style={{ whiteSpace: "nowrap" }}>{flow.accountId}</td>
             <td>{flow.additionalInfo}</td>
           </tr>
         ))}

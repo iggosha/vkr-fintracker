@@ -81,9 +81,8 @@ export function MoneyFlowsPage() {
   const renderPageNumbers = () => {
     if (!flowPage) return null;
 
-    const totalPages = flowPage.totalPages;
-    const currentPage = flowPage.number;
-
+    const totalPages = flowPage.page.totalPages;
+    const currentPage = flowPage.page.number;
     const pagesToShow = [];
     const maxButtons = 5;
 
@@ -181,7 +180,6 @@ export function MoneyFlowsPage() {
         <>
           {flowPage && (
             <>
-              <MoneyFlowTable flows={flowPage.content} clientId={clientId} />
               <div className="pagination-controls">
                 <button
                   onClick={() => updateParam("page", String(page))}
@@ -192,11 +190,12 @@ export function MoneyFlowsPage() {
                 {renderPageNumbers()}
                 <button
                   onClick={() => updateParam("page", String(page + 2))}
-                  disabled={page + 1 >= flowPage.totalPages}
+                  disabled={page + 1 >= flowPage.page.totalPages}
                 >
                   Вперёд
                 </button>
               </div>
+              <MoneyFlowTable flows={flowPage.content} clientId={clientId} />
             </>
           )}
         </>

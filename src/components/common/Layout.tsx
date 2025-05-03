@@ -4,10 +4,10 @@ import { Footer } from "./Footer";
 
 export function Layout() {
   return (
-    <div className="app-container">
+    <div>
       <Header />
-      <main className="content">
-        <Outlet />
+      <main style={{minHeight: "79vh"}}>
+        <Outlet/>
       </main>
       <Footer />
     </div>
