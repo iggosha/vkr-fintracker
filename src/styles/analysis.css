@@ -3,13 +3,13 @@
     text-align: center;
     align-items: center;
     align-content: center;
+    margin: 25px 0;
 }
 
 .analysis-main select {
     border: 0;
     color: #334;
     background-color: #fff;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: large;
     border-radius: 10px;
     padding: 10px 25px;
@@ -32,7 +32,6 @@
     color: #334;
     background-color: #fff;
     font-size: large;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     border-radius: 10px;
     padding: 10px 25px;
     margin: 25px;
@@ -43,9 +42,22 @@
     cursor: pointer;
 }
 
+
+.analysis-main input[type="text"],
+.analysis-main input[type="number"] {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: text;
+}
+
 .analysis-main table {
     width: 40vw;
-    margin: 25px auto;
+    margin: 25px auto 0 auto;
     font-size: medium;
     box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
     border-collapse: collapse;
@@ -84,7 +96,6 @@
     color: #334;
     background-color: #fff;
     font-size: large;
-    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     border-radius: 10px;
     padding: 10px 25px;
     margin: 25px;
@@ -112,9 +123,18 @@
 .analysis-main .pie {
     height: 500px;
     width: 40vw;
-    margin: 25px auto;
+    margin: 50px auto;
     box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
     border-radius: 25px;
     box-sizing: border-box;
+    padding: 25px;
+}
+
+.analysis-main .bars {
+    height: 600px;
+    width: 60vw;
+    margin: 50px auto;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-radius: 25px;
     padding: 25px;
 }

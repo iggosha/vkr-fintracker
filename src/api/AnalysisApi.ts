@@ -15,3 +15,14 @@ export async function getOutflowsByCategories(
   );
   return response.data;
 }
+
+export async function getForecast(
+  clientId: string,
+  monthAmount: number,
+  strategyType: string
+): Promise<Record<string, number>> {
+  const response = await api.get(`/clients/${clientId}/forecast`, {
+    params: { monthAmount, strategyType },
+  });
+  return response.data;
+}
