@@ -58,11 +58,6 @@
     cursor: not-allowed;
 }
 
-.flows-main button.active {
-    background-color: var(--acc-color);
-    color: #fff;
-}
-
 .flows-main .pagination-controls {
     user-select: none;
     display: flex;

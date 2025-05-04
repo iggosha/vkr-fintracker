@@ -8,6 +8,7 @@ import {
   uploadFile,
 } from "../api/MoneyFlowsApi";
 import { MoneyFlow } from "../types/MoneyFlow";
+import { FlowView } from "../components/FlowView";
 import { ManagingTable } from "../components/ManagingTable";
 import "../styles/managing.css";
 
@@ -170,6 +171,16 @@ export function ManagingPage() {
                       type="text"
                       disabled={isLoading}
                     />
+                    <span
+                      onClick={async () => {
+                        const text = await navigator.clipboard.readText();
+                        setFlowId(text);
+                      }}
+
+                      className="paste-button"
+                    >
+                      📤
+                    </span>
                   </td>
                 </tr>
               </tbody>
@@ -185,7 +196,7 @@ export function ManagingPage() {
                 Удалить
               </button>
             </div>
-            {flow && <pre>{JSON.stringify(flow, null, 2)}</pre>}
+            {flow && <FlowView flow={flow} />}
           </div>
 
           <div className="managing-sub">

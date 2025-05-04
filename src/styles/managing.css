@@ -10,6 +10,10 @@
     margin: 0 auto;
 }
 
+.managing-main td {
+    text-align: left;
+}
+
 /* SUB-s & COLUMNS */
 .managing-columns {
     display: flex;
@@ -22,7 +26,7 @@
 
 .managing-sub {
     width: 30vw;
-    margin:  0 0 75px auto;
+    margin: 0 0 75px auto;
     border-radius: 25px;
     padding: 15px;
     box-shadow: 0 0 25px rgba(51, 204, 153, 1);
@@ -30,7 +34,7 @@
 
 /* SELECT  */
 .managing-main select {
-    
+    width: 255px;
     border: 0;
     color: #334;
     background-color: #fff;
@@ -71,6 +75,7 @@
 
 /* INPUTS DATE   */
 .managing-main input[type="date"] {
+    width: 200px;
     border: 0;
     color: #334;
     background-color: #fff;
@@ -155,4 +160,11 @@
     background-color: #445;
     color: #ddd;
     cursor: not-allowed;
+}
+
+.managing-main .paste-button {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
 }

@@ -34,6 +34,11 @@ export const ManagingTable: React.FC<Props> = ({
     onChange({ ...flow, [field]: value });
   };
 
+  const pasteFromClipboard = async (field: keyof MoneyFlow) => {
+    const text = await navigator.clipboard.readText();
+    handleFieldChange(field, text);
+  };
+
   return (
     <div>
       <div>
@@ -81,6 +86,12 @@ export const ManagingTable: React.FC<Props> = ({
                   }
                   disabled={disabled}
                 />
+                <span
+                  className="paste-button"
+                  onClick={() => pasteFromClipboard("accountId")}
+                >
+                  📤
+                </span>
               </td>
             </tr>
           )}
@@ -96,6 +107,12 @@ export const ManagingTable: React.FC<Props> = ({
                   onChange={(e) => handleFieldChange("id", e.target.value)}
                   disabled={disabled}
                 />
+                <span
+                  className="paste-button"
+                  onClick={() => pasteFromClipboard("id")}
+                >
+                  📤
+                </span>
               </td>
             </tr>
           )}
