@@ -70,15 +70,12 @@
 .analysis-main td {
     padding: 5px 25px;
     text-align: center;
-    border: 0;
+    border: 1px solid #556;
 }
 
 .analysis-main td a {
     color: #ddd;
-}
-
-.analysis-main td a:hover {
-    color: var(--acc-color);
+    border-radius: 10px;
 }
 
 .analysis-main th {

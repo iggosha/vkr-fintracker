@@ -1,13 +1,18 @@
 import { useState } from "react";
 import { MoneyFlow } from "../types/MoneyFlow";
-import { Link } from "react-router-dom";
 
 interface Props {
   flows: MoneyFlow[];
   clientId: string;
 }
 
-function CopyableCell({ value, allowWrap = false }: { value: string | number, allowWrap?: boolean }) {
+function CopyableCell({
+  value,
+  allowWrap = false,
+}: {
+  value: string | number;
+  allowWrap?: boolean;
+}) {
   const [copied, setCopied] = useState(false);
 
   const handleClick = async () => {
@@ -21,14 +26,32 @@ function CopyableCell({ value, allowWrap = false }: { value: string | number, al
   };
 
   return (
-    <td onClick={handleClick} style={{ cursor: "pointer", whiteSpace: allowWrap ? "normal" : "nowrap" }}>
+    <td
+      onClick={handleClick}
+      style={{ cursor: "pointer", whiteSpace: allowWrap ? "normal" : "nowrap" }}
+    >
       {value}
       {copied && <span>📥</span>}
     </td>
   );
 }
+export function MoneyFlowTable({ flows }: Props) {
+  const MIN_ROWS = 1;
+  const rows = [...flows];
 
-export function MoneyFlowTable({ flows, clientId }: Props) {
+  while (rows.length < MIN_ROWS) {
+    rows.push({
+      id: "",
+      date: "",
+      description: "",
+      amount: 0,
+      categoryId: "",
+      categoryName: "",
+      accountId: "",
+      additionalInfo: "",
+    } as MoneyFlow);
+  }
+
   return (
     <div>
       <table>
@@ -44,11 +67,11 @@ export function MoneyFlowTable({ flows, clientId }: Props) {
           </tr>
         </thead>
         <tbody>
-          {flows.map((flow) => (
-            <tr key={flow.id}>
-              <CopyableCell value={flow.id}/>
+          {rows.map((flow, index) => (
+            <tr key={index}>
+              <CopyableCell value={flow.id} />
               <CopyableCell value={flow.date} />
-              <CopyableCell value={flow.description} allowWrap={true}/>
+              <CopyableCell value={flow.description} allowWrap={true} />
               <CopyableCell value={flow.amount} />
               <CopyableCell value={flow.categoryName} />
               <CopyableCell value={flow.accountId} />
@@ -57,11 +80,6 @@ export function MoneyFlowTable({ flows, clientId }: Props) {
           ))}
         </tbody>
       </table>
-      <div>
-        <Link to={`/analysis?clientId=${clientId}`}>
-          <button>Перейти к анализу</button>
-        </Link>
-      </div>
     </div>
   );
 }

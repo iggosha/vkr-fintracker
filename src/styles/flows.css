@@ -89,7 +89,7 @@
     box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
     border-collapse: collapse;
     border-spacing: 0;
-    border-radius: 25px;
+    border-radius: 15px;
     overflow: hidden;
 }
 
@@ -97,7 +97,7 @@
 .flows-main td {
     padding: 5px 25px;
     text-align: left;
-    border: 1px solid #ddd;
+    border: 1px solid #556;
 }
 
 .flows-main th {

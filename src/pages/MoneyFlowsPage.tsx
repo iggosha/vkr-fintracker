@@ -1,5 +1,5 @@
 import { useEffect, useState, useCallback } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { getAllClients } from "../api/ClientsApi";
 import { getAllMoneyFlows } from "../api/MoneyFlowsApi";
 import { getAllCategories } from "../api/CategoriesApi";
@@ -174,32 +174,30 @@ export function MoneyFlowsPage() {
 
       {error && <div>{error}</div>}
 
-      {isLoading ? (
-        <div>Загрузка...</div>
-      ) : (
-        <>
-          {flowPage && (
-            <>
-              <div className="pagination-controls">
-                <button
-                  onClick={() => updateParam("page", String(page))}
-                  disabled={page === 0}
-                >
-                  Назад
-                </button>
-                {renderPageNumbers()}
-                <button
-                  onClick={() => updateParam("page", String(page + 2))}
-                  disabled={page + 1 >= flowPage.page.totalPages}
-                >
-                  Вперёд
-                </button>
-              </div>
-              <MoneyFlowTable flows={flowPage.content} clientId={clientId} />
-            </>
-          )}
-        </>
-      )}
+      {error && <div>{error}</div>}
+
+      {isLoading && <div>Загрузка...</div>}
+
+      <div className="pagination-controls">
+        <button
+          onClick={() => updateParam("page", String(page))}
+          disabled={page === 0}
+        >
+          Назад
+        </button>
+        {renderPageNumbers()}
+        <button
+          onClick={() => updateParam("page", String(page + 2))}
+          disabled={flowPage ? page + 1 >= flowPage.page.totalPages : true}
+        >
+          Вперёд
+        </button>
+      </div>
+
+      <MoneyFlowTable flows={flowPage?.content ?? []} clientId={clientId} />
+      <div style={{margin: "50px"}}>
+        <Link to={`/analysis?clientId=${clientId}`}>Перейти к анализу</Link>
+      </div>
     </div>
   );
 }

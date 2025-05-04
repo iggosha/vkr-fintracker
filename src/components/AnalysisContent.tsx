@@ -77,7 +77,7 @@ export function AnalysisContent({
 
   const entries = Object.entries(outflows);
   if (entries.length === 0) {
-    return <div>Нет данных для отображения.</div>;
+    return <div></div>;
   }
 
   return (

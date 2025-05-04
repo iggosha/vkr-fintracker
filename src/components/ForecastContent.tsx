@@ -112,8 +112,8 @@ export function ForecastContent({
       <table>
         <thead>
           <tr>
-            <th>Месяц</th>
-            <th>Сумма изменений</th>
+            <th>📆 Месяц</th>
+            <th>🔟 Изменение баланса</th>
           </tr>
         </thead>
         <tbody>
@@ -125,8 +125,8 @@ export function ForecastContent({
           ))}
         </tbody>
       </table>
-      <div style={{fontSize: "x-large", marginTop: "25px"}}>
-        Суммарное изменение: {totalChange}
+      <div style={{ fontSize: "x-large", marginTop: "25px" }}>
+        🔟 Суммарное изменение баланса за все месяцы: {totalChange}
       </div>
       <div className="bars">
         <Bar data={chartData} options={options} />
