@@ -9,6 +9,6 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class InflowsAndOutflowsDto {
 
-    private BigDecimal outflows;
     private BigDecimal inflows;
+    private BigDecimal outflows;
 }

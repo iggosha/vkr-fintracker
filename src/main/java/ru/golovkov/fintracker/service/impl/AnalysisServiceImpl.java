@@ -50,8 +50,8 @@ public class AnalysisServiceImpl implements AnalysisService {
 
     @Override
     public InflowsAndOutflowsDto getTotalInflowAndOutflow(UUID clientId, LocalDate from, LocalDate to) {
-        Object[] row = moneyFlowRepository.getTotalInflowAndOutflow(clientId, from, to);
-        return new InflowsAndOutflowsDto((BigDecimal) row[0], (BigDecimal) row[1]);
+        List<Object[]> row = moneyFlowRepository.getTotalInflowAndOutflow(clientId, from, to);
+        return new InflowsAndOutflowsDto((BigDecimal) row.getFirst()[0], (BigDecimal) row.getFirst()[1]);
     }
 
     @Override

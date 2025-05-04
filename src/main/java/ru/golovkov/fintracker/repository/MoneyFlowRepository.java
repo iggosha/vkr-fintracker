@@ -65,7 +65,7 @@ public interface MoneyFlowRepository extends JpaRepository<MoneyFlow, String> {
                   AND mf.date >= COALESCE(:from, (SELECT MIN(mf2.date) FROM MoneyFlow mf2))
                   AND mf.date <= COALESCE(:to, (SELECT MAX(mf2.date) FROM MoneyFlow mf2))
             """)
-    Object[] getTotalInflowAndOutflow(
+    List<Object[]> getTotalInflowAndOutflow(
             @Param("clientId") UUID clientId,
             @Param("from") LocalDate from,
             @Param("to") LocalDate to
