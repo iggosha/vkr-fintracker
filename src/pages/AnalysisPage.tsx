@@ -3,9 +3,16 @@ import { useSearchParams } from "react-router-dom";
 import { getAllClients } from "../api/ClientsApi";
 import { getOutflowsByCategories, getForecast } from "../api/AnalysisApi";
 import { getAllCategories } from "../api/CategoriesApi";
+import {
+  getMonthlyInflowsAndOutflows,
+  getTotalInflowAndOutflow,
+} from "../api/AnalysisApi";
+import { FlowsAnalysisContent } from "../components/FlowsAnalysisContent";
+
 import { Client } from "../types/Client";
+import { InflowsAndOutflows } from "../types/InflowsAndOutflows";
 import { Category } from "../types/Category";
-import { AnalysisContent } from "../components/AnalysisContent";
+import { CategoriesAnalysisContent } from "../components/CategoriesAnalysisContent";
 import { ForecastContent } from "../components/ForecastContent";
 import {
   Chart as ChartJS,
@@ -27,6 +34,11 @@ export function AnalysisPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
+  const [monthlyFlows, setMonthlyFlows] = useState<
+    Record<string, InflowsAndOutflows>
+  >({});
+  const [totalFlow, setTotalFlow] = useState<InflowsAndOutflows | null>(null);
+
   const urlClientId = searchParams.get("clientId") || "";
   const urlFrom = searchParams.get("from") || "";
   const urlTo = searchParams.get("to") || "";
@@ -89,7 +101,40 @@ export function AnalysisPage() {
     setSearchParams(params, { replace: true });
     loadOutflows();
     loadForecast();
+    loadFlows();
   };
+
+  const loadFlows = useCallback(async () => {
+    if (!clientId || !validateDateRange(from, to)) {
+      setMonthlyFlows({});
+      setTotalFlow(null);
+      return;
+    }
+
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      const [monthly, total] = await Promise.all([
+        getMonthlyInflowsAndOutflows(clientId, from, to),
+        getTotalInflowAndOutflow(clientId, from, to),
+      ]);
+      setMonthlyFlows(
+        Object.fromEntries(
+          Object.entries(monthly).map(([k, v]) => [
+            k,
+            { inflows: v.inflows, outflows: v.outflows },
+          ])
+        )
+      );
+      setTotalFlow({ inflows: total.inflows, outflows: total.outflows });
+    } catch (e) {
+      console.error(e);
+      setError("Не удалось загрузить данные притоков/оттоков.");
+    } finally {
+      setIsLoading(false);
+    }
+  }, [clientId, from, to]);
 
   useEffect(() => {
     Promise.all([getAllClients(), getAllCategories()])
@@ -113,6 +158,7 @@ export function AnalysisPage() {
       setStrategyType(urlStrategy);
       loadOutflows();
       loadForecast();
+      loadFlows();
     }
   }, [
     urlClientId,
@@ -122,12 +168,13 @@ export function AnalysisPage() {
     urlStrategy,
     loadOutflows,
     loadForecast,
+    loadFlows,
   ]);
 
   return (
     <div className="analysis-main">
       <div>
-        <div>Прогнозирование</div>
+        <div>Прогнозирование изменений баланса</div>
 
         <div>
           <select
@@ -162,7 +209,7 @@ export function AnalysisPage() {
           </select>
 
           <button onClick={applyFilters} disabled={isLoading || !clientId}>
-            Применить прогноз
+            Применить
           </button>
         </div>
 
@@ -200,18 +247,59 @@ export function AnalysisPage() {
         />
 
         <button onClick={applyFilters} disabled={isLoading || !clientId}>
-          Применить фильтры анализа
+          Применить
         </button>
+
+        {error && <div>{error}</div>}
+
+        <CategoriesAnalysisContent
+          outflows={outflows}
+          isLoading={isLoading}
+          clientId={clientId}
+          categories={categories}
+        />
       </div>
+      <div>
+        <div>Анализ доходов и расходов</div>
+        <div style={{ marginBottom: "0.5rem" }}>
+          <select
+            value={clientId}
+            onChange={(e) => setClientId(e.target.value)}
+            disabled={isLoading}
+          >
+            <option value="">👤 Выберите клиента</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.name}
+              </option>
+            ))}
+          </select>
 
-      {error && <div>{error}</div>}
+          <input
+            type="date"
+            value={from}
+            onChange={(e) => setFrom(e.target.value)}
+            disabled={isLoading}
+          />
+          <input
+            type="date"
+            value={to}
+            onChange={(e) => setTo(e.target.value)}
+            disabled={isLoading}
+          />
 
-      <AnalysisContent
-        outflows={outflows}
-        isLoading={isLoading}
-        clientId={clientId}
-        categories={categories}
-      />
+          <button onClick={applyFilters} disabled={isLoading || !clientId}>
+            Применить
+          </button>
+        </div>
+
+        {Object.keys(monthlyFlows).length > 0 && totalFlow && (
+          <FlowsAnalysisContent
+            monthlyFlows={monthlyFlows}
+            totalFlow={totalFlow}
+          />
+        )}
+      </div>
     </div>
   );
 }

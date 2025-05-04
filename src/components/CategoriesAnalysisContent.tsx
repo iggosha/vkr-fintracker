@@ -28,7 +28,7 @@ interface Props {
   categories: { id: string; name: string }[];
 }
 
-export function AnalysisContent({
+export function CategoriesAnalysisContent({
   outflows,
   isLoading,
   clientId,
@@ -54,7 +54,8 @@ export function AnalysisContent({
           color: "#ddd",
           font: {
             size: 16,
-            family: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif"
+            family:
+              "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
           },
           padding: 16,
           boxWidth: 20,
@@ -82,6 +83,7 @@ export function AnalysisContent({
 
   return (
     <div>
+      
       <div>
         <table>
           <thead>
@@ -107,10 +109,10 @@ export function AnalysisContent({
           </tbody>
         </table>
       </div>
-
       <div className="pie">
         <Pie data={chartData} options={chartOptions} />
       </div>
+
     </div>
   );
 }
