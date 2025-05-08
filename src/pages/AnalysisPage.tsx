@@ -23,6 +23,8 @@ import {
   Legend,
 } from "chart.js";
 import "../styles/analysis.css";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Tooltip, Legend);
 
@@ -53,6 +55,72 @@ export function AnalysisPage() {
   const validateDateRange = (f: string, t: string) => {
     if (!f || !t) return true;
     return new Date(f) <= new Date(t);
+  };
+
+  const exportToPDF = async () => {
+    const content = document.querySelector(".analysis-main") as HTMLElement;
+    if (!content) return;
+    const controls = content.querySelectorAll("select, input, button");
+    controls.forEach((el) => el.classList.add("hidden"));
+    window.scrollTo(0, 0);
+    await new Promise((resolve) => setTimeout(resolve, 2000));
+    const sections = content.querySelectorAll(
+      ".section"
+    ) as NodeListOf<HTMLElement>;
+    if (!sections.length) return;
+    const pdf = new jsPDF("p", "mm", "a4");
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    for (let i = 0; i < sections.length; i++) {
+      const section = sections[i];
+      section.style.minHeight = `${pageHeight * 3.78}mm`;
+      const tempBg = document.createElement("div");
+      tempBg.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: #333344;
+      z-index: -1;
+      pointer-events: none;
+    `;
+      section.appendChild(tempBg);
+      sections.forEach(
+        (s, j) => (s.style.display = j === i ? "block" : "none")
+      );
+      const canvas = await html2canvas(section, {
+        scale: 1.5,
+        backgroundColor: "#333344",
+        scrollY: -window.scrollY,
+        useCORS: true,
+        logging: false,
+      });
+      if (tempBg.parentNode) tempBg.parentNode.removeChild(tempBg);
+      const imgData = canvas.toDataURL("image/jpeg", 1);
+
+      const imgWidth = pageWidth;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      if (i > 0) pdf.addPage();
+      pdf.addImage(
+        imgData,
+        "JPEG",
+        0,
+        0,
+        imgWidth,
+        imgHeight,
+        undefined,
+        "FAST"
+      );
+    }
+
+    controls.forEach((el) => el.classList.remove("hidden"));
+    sections.forEach((s) => (s.style.display = ""));
+    sections.forEach((s) => (s.style.minHeight = ""));
+
+    pdf.save("analysis_report.pdf");
   };
 
   const loadOutflows = useCallback(async () => {
@@ -169,7 +237,7 @@ export function AnalysisPage() {
 
   return (
     <div className="analysis-main">
-      <div>
+      <div className="section">
         <div>Прогнозирование изменений баланса</div>
 
         <div>
@@ -214,7 +282,7 @@ export function AnalysisPage() {
         )}
       </div>
 
-      <div>
+      <div className="section">
         <div>Анализ расходов по категориям</div>
         <select
           value={clientId}
@@ -253,9 +321,10 @@ export function AnalysisPage() {
           categories={categories}
         />
       </div>
-      <div>
+
+      <div className="section">
         <div>Анализ доходов и расходов</div>
-        <div style={{ marginBottom: "0.5rem" }}>
+        <div>
           <select
             value={clientId}
             onChange={(e) => setClientId(e.target.value)}
@@ -294,6 +363,10 @@ export function AnalysisPage() {
           />
         )}
       </div>
+
+      <button onClick={exportToPDF} disabled={isLoading}>
+        📄 Экспортировать в PDF
+      </button>
     </div>
   );
 }
