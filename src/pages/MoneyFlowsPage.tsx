@@ -74,7 +74,6 @@ export function MoneyFlowsPage() {
 
     loadFlows();
   }, [clientId, categoryId, page]);
-
   const renderPageNumbers = () => {
     if (!flowPage) return null;
 
@@ -88,28 +87,37 @@ export function MoneyFlowsPage() {
         pagesToShow.push(i);
       }
     } else {
-      const start = Math.max(0, currentPage - 1);
-      const end = Math.min(totalPages, currentPage + 2);
-
-      if (start > 0) pagesToShow.push(0);
-      if (start > 1) pagesToShow.push(-1);
-
-      for (let i = start; i < end; i++) {
-        pagesToShow.push(i);
+      if (currentPage <= 1) {
+        for (let i = 0; i < 3; i++) pagesToShow.push(i);
+        pagesToShow.push(-1);
+        pagesToShow.push(totalPages - 1);
+      } else if (currentPage >= totalPages - 2) {
+        pagesToShow.push(0);
+        pagesToShow.push(-1);
+        for (let i = totalPages - 3; i < totalPages; i++) {
+          pagesToShow.push(i);
+        }
+      } else {
+        pagesToShow.push(0);
+        pagesToShow.push(-1);
+        for (let i = currentPage - 1; i <= currentPage + 1; i++) {
+          pagesToShow.push(i);
+        }
+        pagesToShow.push(-1);
+        pagesToShow.push(totalPages - 1);
       }
-
-      if (end < totalPages - 1) pagesToShow.push(-1);
-      if (end < totalPages) pagesToShow.push(totalPages - 1);
     }
 
     return (
       <div className="pagination">
         {pagesToShow.map((p, i) =>
           p === -1 ? (
-            <span key={i}>...</span>
+            <span key={`ellipsis-${i}`} className="ellipsis">
+              …
+            </span>
           ) : (
             <button
-              key={p}
+              key={`page-${p}`}
               className={p === currentPage ? "active" : ""}
               onClick={() => updateParam("page", String(p + 1))}
             >
