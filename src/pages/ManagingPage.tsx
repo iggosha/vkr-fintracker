@@ -16,8 +16,6 @@ export function ManagingPage() {
   const [flowId, setFlowId] = useState("");
   const [flow, setFlow] = useState<MoneyFlow | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [newFlow, setNewFlow] = useState<MoneyFlow>({
     id: "",
     date: "",
@@ -32,14 +30,12 @@ export function ManagingPage() {
   const handleGetFlow = useCallback(async () => {
     if (!flowId) return;
     setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
     try {
       const data = await getFlowById(flowId);
       setFlow(data);
     } catch (e) {
       console.error(e);
-      setError("Не удалось загрузить транзакцию.");
+      alert("Не удалось загрузить транзакцию.");
       setFlow(null);
     } finally {
       setIsLoading(false);
@@ -48,18 +44,16 @@ export function ManagingPage() {
 
   const handleCreateFlow = useCallback(async () => {
     if (!newFlow.accountId) {
-      setError("Нужно указать accountId");
+      alert("Нужно указать accountId");
       return;
     }
     setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
     try {
       const created = await createFlow(newFlow);
-      setSuccessMessage(`Создана транзакция с id ${created.id}`);
+      alert(`Создана транзакция с id ${created.id}`);
     } catch (e) {
       console.error(e);
-      setError("Ошибка при создании транзакции.");
+      alert("Ошибка при создании транзакции.");
     } finally {
       setIsLoading(false);
     }
@@ -67,18 +61,16 @@ export function ManagingPage() {
 
   const handleUpdateFlow = useCallback(async () => {
     if (!newFlow.id) {
-      setError("Код транзакции не указан.");
+      alert("Код транзакции не указан.");
       return;
     }
     setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
     try {
       const updatedFlow = await updateFlow(newFlow);
-      setSuccessMessage(`Транзакция ${updatedFlow.id} обновлена.`);
+      alert(`Транзакция ${updatedFlow.id} обновлена.`);
     } catch (e) {
       console.error(e);
-      setError("Ошибка при обновлении транзакции.");
+      alert("Ошибка при обновлении транзакции.");
     } finally {
       setIsLoading(false);
     }
@@ -87,14 +79,12 @@ export function ManagingPage() {
   const handleDeleteFlow = useCallback(async () => {
     if (!flowId) return;
     setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
     try {
       await deleteFlowById(flowId);
-      setSuccessMessage(`Транзакция ${flowId} удалена.`);
+      alert(`Транзакция ${flowId} удалена.`);
     } catch (e) {
       console.error(e);
-      setError("Не удалось удалить транзакцию.");
+      alert("Не удалось удалить транзакцию.");
     } finally {
       setIsLoading(false);
     }
@@ -102,14 +92,12 @@ export function ManagingPage() {
 
   const handleDeleteAll = useCallback(async () => {
     setIsLoading(true);
-    setError(null);
-    setSuccessMessage(null);
     try {
       await deleteAllFlows();
-      setSuccessMessage("Все транзакции удалены.");
+      alert("Все транзакции удалены.");
     } catch (e) {
       console.error(e);
-      setError("Ошибка при удалении всех транзакций.");
+      alert("Ошибка при удалении всех транзакций.");
     } finally {
       setIsLoading(false);
     }
@@ -120,14 +108,12 @@ export function ManagingPage() {
       const file = e.target.files?.[0];
       if (!file) return;
       setIsLoading(true);
-      setError(null);
-      setSuccessMessage(null);
       try {
         await uploadFile(file);
-        setSuccessMessage("Файл успешно загружен.");
+        alert("Файл успешно загружен.");
       } catch (e) {
         console.error(e);
-        setError("Ошибка при загрузке файла.");
+        alert("Ошибка при загрузке файла.");
       } finally {
         setIsLoading(false);
       }
@@ -138,12 +124,6 @@ export function ManagingPage() {
   return (
     <div className="managing-main">
       <h2>Управление транзакциями</h2>
-
-      {error && <div style={{ color: "red" }}>{error}</div>}
-      {successMessage && (
-        <div style={{ color: "lightgreen" }}>{successMessage}</div>
-      )}
-
       <div className="managing-columns">
         <div>
           <div className="managing-sub">
@@ -176,7 +156,6 @@ export function ManagingPage() {
                         const text = await navigator.clipboard.readText();
                         setFlowId(text);
                       }}
-
                       className="paste-button"
                     >
                       📤

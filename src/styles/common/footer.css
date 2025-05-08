@@ -4,7 +4,7 @@ footer {
     overflow: hidden;
 
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 }
 

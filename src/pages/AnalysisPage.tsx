@@ -32,7 +32,6 @@ export function AnalysisPage() {
   const [outflows, setOutflows] = useState<Record<string, number>>({});
   const [forecast, setForecast] = useState<Record<string, number>>({});
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
   const [monthlyFlows, setMonthlyFlows] = useState<
     Record<string, InflowsAndOutflows>
@@ -63,14 +62,12 @@ export function AnalysisPage() {
     }
 
     setIsLoading(true);
-    setError(null);
-
     try {
       const data = await getOutflowsByCategories(clientId, from, to);
       setOutflows(data);
     } catch (e) {
       console.error(e);
-      setError("Не удалось загрузить данные анализа.");
+      alert("Не удалось загрузить данные анализа.");
     } finally {
       setIsLoading(false);
     }
@@ -87,7 +84,7 @@ export function AnalysisPage() {
       setForecast(data);
     } catch (e) {
       console.error(e);
-      setError("Не удалось загрузить прогноз.");
+      alert("Не удалось загрузить прогноз.");
     }
   }, [clientId, monthAmount, strategyType]);
 
@@ -112,7 +109,6 @@ export function AnalysisPage() {
     }
 
     setIsLoading(true);
-    setError(null);
 
     try {
       const [monthly, total] = await Promise.all([
@@ -130,7 +126,7 @@ export function AnalysisPage() {
       setTotalFlow({ inflows: total.inflows, outflows: total.outflows });
     } catch (e) {
       console.error(e);
-      setError("Не удалось загрузить данные притоков/оттоков.");
+      alert("Не удалось загрузить данные доходов/расходов.");
     } finally {
       setIsLoading(false);
     }
@@ -142,9 +138,9 @@ export function AnalysisPage() {
         setClients(clientsData);
         setCategories(categoriesData);
       })
-      .catch((e) => {
-        console.error(e);
-        setError("Ошибка загрузки клиентов или категорий.");
+      .catch((error) => {
+        console.error("Ошибка при инициализации данных: " + error);
+        alert("Ошибка при инициализации данных: " + error);
       });
   }, []);
 
@@ -249,8 +245,6 @@ export function AnalysisPage() {
         <button onClick={applyFilters} disabled={isLoading || !clientId}>
           Применить
         </button>
-
-        {error && <div>{error}</div>}
 
         <CategoriesAnalysisContent
           outflows={outflows}

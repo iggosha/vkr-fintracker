@@ -1,0 +1,11 @@
+.home-main {
+
+    color: #ddd;
+    width: 40vw;
+    margin: 0 auto;
+    font-size: large;
+}
+
+.home-main a {
+    color: var(--acc-color);
+}

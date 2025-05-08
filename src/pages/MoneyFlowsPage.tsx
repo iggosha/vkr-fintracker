@@ -15,7 +15,6 @@ export function MoneyFlowsPage() {
   const [categories, setCategories] = useState<Category[]>([]);
   const [flowPage, setFlowPage] = useState<Page<MoneyFlow> | null>(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
   const [searchParams, setSearchParams] = useSearchParams();
 
   const clientId = searchParams.get("clientId") || "";
@@ -39,7 +38,6 @@ export function MoneyFlowsPage() {
   useEffect(() => {
     const fetchInitialData = async () => {
       setIsLoading(true);
-      setError(null);
       try {
         const [clientsData, categoriesData] = await Promise.all([
           getAllClients(),
@@ -48,7 +46,7 @@ export function MoneyFlowsPage() {
         setClients(clientsData);
         setCategories(categoriesData);
       } catch (error) {
-        setError("Ошибка при инициализации данных." + error);
+        alert("Ошибка при инициализации данных: " + error);
       } finally {
         setIsLoading(false);
       }
@@ -64,12 +62,11 @@ export function MoneyFlowsPage() {
         return;
       }
       setIsLoading(true);
-      setError(null);
       try {
         const pageData = await getAllMoneyFlows(clientId, page, 10, categoryId);
         setFlowPage(pageData);
       } catch (error) {
-        setError("Не удалось загрузить транзакции." + error);
+        alert("Не удалось загрузить транзакции: " + error);
       } finally {
         setIsLoading(false);
       }
@@ -172,10 +169,6 @@ export function MoneyFlowsPage() {
         ))}
       </select>
 
-      {error && <div>{error}</div>}
-
-      {error && <div>{error}</div>}
-
       {isLoading && <div>Загрузка...</div>}
 
       <div className="pagination-controls">
@@ -195,7 +188,7 @@ export function MoneyFlowsPage() {
       </div>
 
       <MoneyFlowTable flows={flowPage?.content ?? []} clientId={clientId} />
-      <div style={{margin: "50px"}}>
+      <div style={{ margin: "50px" }}>
         <Link to={`/analysis?clientId=${clientId}`}>Перейти к анализу</Link>
       </div>
     </div>
