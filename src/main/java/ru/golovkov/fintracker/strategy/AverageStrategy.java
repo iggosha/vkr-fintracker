@@ -23,11 +23,11 @@ public class AverageStrategy implements ForecastStrategy {
         BigDecimal average = sum.divide(BigDecimal.valueOf(actualNetChangeMap.size()), RoundingMode.HALF_UP);
         YearMonth lastMonth = actualNetChangeMap.lastKey();
 
-        Map<YearMonth, BigDecimal> forecast = new TreeMap<>();
+        Map<YearMonth, BigDecimal> forecastMap = new TreeMap<>();
         for (int i = 1; i <= forecastMonths; i++) {
-            forecast.put(lastMonth.plusMonths(i), average);
+            forecastMap.put(lastMonth.plusMonths(i), average);
         }
 
-        return forecast;
+        return forecastMap;
     }
 }

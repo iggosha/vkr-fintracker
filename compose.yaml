@@ -10,6 +10,9 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fin-network
+
 
   fintracker:
     container_name: fintracker
@@ -21,6 +24,13 @@ services:
       - "8080:8080"
     depends_on:
       - fintracker-db
+    networks:
+      - fin-network
+
 
 volumes:
   postgres_data:
+
+networks:
+  fin-network:
+    external: true

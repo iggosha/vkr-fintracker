@@ -40,14 +40,14 @@ public class LinearRegressionStrategy implements ForecastStrategy {
         BigDecimal slope = numerator.divide(denominator, 10, RoundingMode.HALF_UP);
         BigDecimal intercept = meanY.subtract(slope.multiply(meanX));
 
-        Map<YearMonth, BigDecimal> forecast = new TreeMap<>();
+        Map<YearMonth, BigDecimal> forecastMap = new TreeMap<>();
         for (int i = 1; i <= forecastMonths; i++) {
             BigDecimal x = BigDecimal.valueOf(actualNetChangeMapSize + (long) i);
             BigDecimal forecastValue = slope.multiply(x).add(intercept).setScale(2, RoundingMode.HALF_UP);
             YearMonth forecastMonth = lastMonth.plusMonths(i);
-            forecast.put(forecastMonth, forecastValue);
+            forecastMap.put(forecastMonth, forecastValue);
         }
 
-        return forecast;
+        return forecastMap;
     }
 }
