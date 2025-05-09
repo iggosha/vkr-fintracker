@@ -2,5 +2,15 @@ services:
   finparser:
     container_name: finparser
     image: golovkov/finparser:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-      - "8081:8080"
+      - "8081:8081"
+    networks:
+      - fin-network
+
+
+networks:
+  fin-network:
+    external: true

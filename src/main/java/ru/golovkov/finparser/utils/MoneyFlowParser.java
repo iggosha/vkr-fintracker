@@ -15,15 +15,25 @@ public class MoneyFlowParser {
     private final ParsingUtils parsingUtils;
 
     public MoneyFlowDto parse(Row row) {
+        String description = parseDescription(row);
+        String categoryName = parseCategoryName(row);
+        String additionalInfo = parseStatus(row);
+        if (isTransfer(description)) {
+            categoryName = "Переводы";
+        }
         return MoneyFlowDto
                 .builder()
                 .id(parseId(row))
                 .date(parseDate(row))
-                .categoryName(parseCategoryName(row))
-                .description(parseDescription(row))
+                .categoryName(categoryName)
+                .description(description)
                 .amount(parseAmount(row))
-                .additionalInfo(parseStatus(row))
+                .additionalInfo(additionalInfo)
                 .build();
+    }
+
+    private boolean isTransfer(String description) {
+        return description.contains("Перевод") || description.contains("перевод");
     }
 
     private LocalDate parseDate(Row row) {

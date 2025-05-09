@@ -10,8 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import ru.golovkov.finparser.dto.AccountDto;
 import ru.golovkov.finparser.dto.ClientDto;
 import ru.golovkov.finparser.dto.MoneyFlowDto;
-import ru.golovkov.finparser.dto.RowDto;
 import ru.golovkov.finparser.dto.ParsedEntitiesDto;
+import ru.golovkov.finparser.dto.RowDto;
 import ru.golovkov.finparser.exception.ResourceIOException;
 import ru.golovkov.finparser.service.ParsingService;
 import ru.golovkov.finparser.utils.AccountParser;
@@ -68,6 +68,7 @@ public class ParsingServiceImpl implements ParsingService {
 
     @Override
     public ParsedEntitiesDto parseSheetEntities(MultipartFile sheetFile) {
+        log.info("Got file: {}", sheetFile.getOriginalFilename());
         Sheet sheet = parsingUtils.getSheet(sheetFile);
         ParsedEntitiesDto parsedEntitiesDto = new ParsedEntitiesDto();
         parsedEntitiesDto.setClient(clientParser.parse(sheet));
