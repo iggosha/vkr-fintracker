@@ -135,7 +135,6 @@ export function AnalysisPage() {
       setOutflows(data);
     } catch (e) {
       console.error(e);
-      alert("Не удалось загрузить данные анализа.");
     } finally {
       setIsLoading(false);
     }
@@ -152,7 +151,6 @@ export function AnalysisPage() {
       setForecast(data);
     } catch (e) {
       console.error(e);
-      alert("Не удалось загрузить прогноз.");
     }
   }, [clientId, monthAmount, strategyType]);
 
@@ -194,7 +192,6 @@ export function AnalysisPage() {
       setTotalFlow({ inflows: total.inflows, outflows: total.outflows });
     } catch (e) {
       console.error(e);
-      alert("Не удалось загрузить данные доходов/расходов.");
     } finally {
       setIsLoading(false);
     }

@@ -47,7 +47,6 @@ export function ForecastContent({
         label: "Прогноз изменения баланса",
         data: Object.values(forecast),
         backgroundColor: generateBackgroundColors(),
-        barThickness: 80,
       },
     ],
   };

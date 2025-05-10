@@ -21,13 +21,11 @@ export function FlowsAnalysisContent({
         label: "Доходы",
         data: inflows,
         backgroundColor: "#3c9",
-        barThickness: 50,
       },
       {
         label: "Расходы",
         data: outflows,
         backgroundColor: "#c93",
-        barThickness: 50,
       },
     ],
   };
