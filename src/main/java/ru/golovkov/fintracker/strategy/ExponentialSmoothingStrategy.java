@@ -10,7 +10,7 @@ import java.util.TreeMap;
 public class ExponentialSmoothingStrategy implements ForecastStrategy {
 
     // Больше альфа - больше веса последним. Например, при 0.3 последние 3 месяца будут давать более половины влияния
-    private static final BigDecimal ALPHA = BigDecimal.valueOf(0.3);
+    private static final BigDecimal ALPHA = BigDecimal.valueOf(0.4);
     // Больше бета - меньше плавность изменения тренда
     private static final BigDecimal BETA = BigDecimal.valueOf(0.2);
 

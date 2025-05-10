@@ -2,9 +2,9 @@ spring:
   application:
     name: fintracker
   datasource:
-    url: jdbc:postgresql://fintracker-db:5432/fintracker-db
-    username: postgres
-    password: postgres
+    url: jdbc:postgresql://${FINTRACKER_DB_HOST}:5432/${POSTGRES_DB}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
   jpa:
     hibernate:
       ddl-auto: update
@@ -13,5 +13,4 @@ server:
   servlet:
     context-path: /api/v1
 finparser:
-  url: "finparser:8081/api/v1"
-
+  url: ${FINPARSER_URL}
