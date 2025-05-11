@@ -1,0 +1,13 @@
+footer {
+    background-color: #445;
+    min-height: 100px;
+    overflow: hidden;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+footer div {
+    color: #ddd;
+}

@@ -1,0 +1,146 @@
+.analysis-main {
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    margin: 25px 0;
+}
+
+.analysis-main select {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.analysis-main select option:checked {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.analysis-main select option {
+    background-color: #fff;
+    color: #334;
+}
+
+.analysis-main input[type="date"] {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: text;
+}
+
+.analysis-main input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+
+.analysis-main input[type="text"],
+.analysis-main input[type="number"] {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: text;
+}
+
+.analysis-main table {
+    width: 40vw;
+    margin: 25px auto 0 auto;
+    font-size: medium;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 25px;
+    overflow: hidden;
+}
+
+.analysis-main th,
+.analysis-main td {
+    padding: 5px 25px;
+    text-align: center;
+    border: 1px solid #556;
+}
+
+.analysis-main td a {
+    color: #ddd;
+    border-radius: 10px;
+}
+
+
+.analysis-main .hidden {
+    display: none !important;
+}
+
+.analysis-main th {
+    text-align: center;
+    color: #fff;
+    background-color: var(--acc-color);
+}
+
+.analysis-main tr:nth-child(even) {
+    background-color: #445;
+}
+
+.analysis-main button {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.analysis-main button:hover {
+    color: #fff;
+    transition: all 0.5s ease-out;
+    background-color: var(--acc-color);
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+.analysis-main button:active {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.analysis-main button:disabled {
+    background-color: #445;
+    color: #ddd;
+    cursor: not-allowed;
+}
+
+.analysis-main .pie {
+    height: 500px;
+    width: 40vw;
+    margin: 50px auto;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-radius: 25px;
+    box-sizing: border-box;
+    padding: 25px;
+}
+
+.analysis-main .bars {
+    height: 600px;
+    width: 60vw;
+    margin: 50px auto;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-radius: 25px;
+    padding: 25px;
+}
+
+.section {
+    /* for export to pdf */
+}

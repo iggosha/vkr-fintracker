@@ -1,0 +1,170 @@
+.managing-main {
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    font-size: large;
+}
+
+.managing-main table {
+    margin: 0 auto;
+}
+
+.managing-main td {
+    text-align: left;
+}
+
+/* SUB-s & COLUMNS */
+.managing-columns {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 40px;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+
+.managing-sub {
+    width: 30vw;
+    margin: 0 0 75px auto;
+    border-radius: 25px;
+    padding: 15px;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+/* SELECT  */
+.managing-main select {
+    width: 255px;
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.managing-main select option:checked {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.managing-main select option {
+    background-color: #fff;
+    color: #334;
+}
+
+/* INPUTS TEXT NUMBER  */
+.managing-main input[type="text"],
+.managing-main input[type="number"] {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: text;
+}
+
+.managing-main input[type="text"]:hover,
+.managing-main input[type="number"]:hover {
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+/* INPUTS DATE   */
+.managing-main input[type="date"] {
+    width: 200px;
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: text;
+}
+
+.managing-main input[type="date"]::-webkit-calendar-picker-indicator {
+    cursor: pointer;
+}
+
+.managing-main input[type="date"]:hover {
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+/* INPUTS FILE   */
+.managing-main input[type="file"] {
+    border: 0;
+    color: #334;
+    background-color: #ddd;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+    transition: all 0.5s ease-out;
+}
+
+.managing-main input[type="file"]:hover {
+    color: #fff;
+    background-color: var(--acc-color);
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+.managing-main input[type="file"]::file-selector-button {
+    padding: 10px;
+    cursor: pointer;
+    font-size: large;
+    border: 0;
+    border-radius: 10px;
+    background-color: #fff;
+    color: #334;
+    transition: all 0.5s ease-out;
+}
+
+.managing-main input[type="file"]::file-selector-button:hover {
+    color: #fff;
+    background-color: var(--acc-color);
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+
+/* BUTTONS  */
+.managing-main button {
+    border: 0;
+    background-color: #fff;
+    color: #334;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+.managing-main button:hover {
+    color: #fff;
+    transition: all 0.5s ease-out;
+    background-color: var(--acc-color);
+    box-shadow: 0 0 25px rgba(51, 204, 153, 1);
+}
+
+.managing-main button:active {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.managing-main button:disabled {
+    background-color: #445;
+    color: #ddd;
+    cursor: not-allowed;
+}
+
+.managing-main .paste-button {
+    cursor: pointer;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 10px;
+}

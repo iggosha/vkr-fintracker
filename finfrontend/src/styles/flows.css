@@ -1,0 +1,158 @@
+.flows-main {
+    font-size: large;
+    color: #ddd;
+    text-align: center;
+    align-items: center;
+    align-content: center;
+    min-height: 60vh;
+}
+
+.flows-main select {
+    border: 0;
+    color: #334;
+    background-color: #fff;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 25px;
+    cursor: pointer;
+}
+
+.flows-main select option:checked {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.flows-main select option {
+    background-color: #fff;
+    color: #334;
+}
+
+.flows-main button {
+    border: 0;
+    background-color: #fff;
+    color: #334;
+    font-size: large;
+    border-radius: 10px;
+    padding: 10px 25px;
+    margin: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+}
+
+.flows-main button:hover {
+    color: #fff;
+    transition: all 0.5s ease-out;
+    background-color: var(--acc-color);
+    box-shadow: 0 0 25px #3c9;
+}
+
+.flows-main button:active {
+    background-color: var(--acc-color);
+    color: #fff;
+}
+
+.flows-main button:disabled {
+    background-color: #445;
+    color: #ddd;
+    cursor: not-allowed;
+}
+
+.flows-main .pagination-controls {
+    user-select: none;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 20px 0;
+}
+
+.flows-main .pagination {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+}
+
+.flows-main .pagination span {
+    font-size: large;
+    color: #ddd;
+    padding: 10px;
+    line-height: 1;
+}
+
+.flows-main table {
+    width: 80vw;
+    margin: 25px auto;
+    font-size: medium;
+    box-shadow: 0 0 25px rgba(51, 204, 153, 0.5);
+    border-collapse: collapse;
+    border-spacing: 0;
+    border-radius: 15px;
+    overflow: hidden;
+}
+
+.flows-main th,
+.flows-main td {
+    padding: 5px 25px;
+    text-align: left;
+    border: 1px solid #556;
+}
+
+.flows-main th {
+    white-space: nowrap;
+    text-align: center;
+    color: #fff;
+    background-color: var(--acc-color);
+}
+
+.flows-main tr:nth-child(even) {
+    background-color: #445;
+}
+
+.flows-main .error-message {
+    color: #f33;
+    font-size: large;
+    margin: 20px 0;
+}
+
+.flows-main .table-container {
+    position: relative;
+    min-height: 200px;
+
+}
+
+.flows-main .loading-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 10;
+
+}
+
+.flows-main .loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 5px solid #ddd;
+    border-top: 5px solid #3c9;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
