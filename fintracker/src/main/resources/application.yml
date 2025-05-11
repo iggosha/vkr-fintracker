@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: fintracker
+  datasource:
+    url: jdbc:postgresql://${FINTRACKER_DB_HOST}:5432/${POSTGRES_DB}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: update
+server:
+  port: 8080
+  servlet:
+    context-path: /api/v1
+finparser:
+  url: ${FINPARSER_URL}
