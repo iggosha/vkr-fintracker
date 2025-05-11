@@ -77,7 +77,9 @@ public class ParsingServiceImpl implements ParsingService {
             for (Row row : sheet) {
                 if (row.getRowNum() < EMPTY_ROWS_AMOUNT) continue;
                 MoneyFlowDto moneyFlowDto = moneyFlowParser.parse(row);
-                parsedEntitiesDto.getMoneyFlows().add(moneyFlowDto);
+                if (!moneyFlowDto.getId().isBlank()) {
+                    parsedEntitiesDto.getMoneyFlows().add(moneyFlowDto);
+                }
             }
         } catch (ResourceIOException e) {
             log.info("Supposedly got EOF, last parsed transaction '{}'", parsedEntitiesDto.getMoneyFlows().getLast());
