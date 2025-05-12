@@ -1,0 +1,68 @@
+services:
+  fintracker-db:
+    image: postgres:16.4-alpine
+    container_name: fintracker-db-1.0
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - fin-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  fintracker:
+    container_name: fintracker-1.0
+    build:
+      context: ./fintracker
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      fintracker-db:
+        condition: service_healthy
+    networks:
+      - fin-network
+    environment:
+      - FINTRACKER_DB_HOST=${FINTRACKER_DB_HOST}
+      - POSTGRES_DB=${POSTGRES_DB}
+      - SPRING_DATASOURCE_USERNAME=${POSTGRES_USER}
+      - SPRING_DATASOURCE_PASSWORD=${POSTGRES_PASSWORD}
+      - FINPARSER_URL=${FINPARSER_URL}
+
+  finparser:
+    container_name: finparser-1.0
+    build:
+      context: ./finparser
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8081"
+    networks:
+      - fin-network
+
+  finfrontend:
+    container_name: finfrontend-1.0
+    build:
+      context: ./finfrontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    networks:
+      - fin-network
+    environment:
+      - NODE_ENV=${NODE_ENV}
+      - API_URL=${API_URL}
+
+volumes:
+  postgres_data:
+
+networks:
+  fin-network:
+    driver: bridge
